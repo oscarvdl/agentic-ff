@@ -13,6 +13,7 @@ public class Order
         "NL" => 0.21m,
         "DE" => 0.19m,
         "FR" => 0.20m,
+        "ES" => 0.21m,
         _ => 0.20m,
     };
 }

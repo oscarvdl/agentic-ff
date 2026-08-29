@@ -19,6 +19,11 @@ prompt = (
     f"RUBRIC:\n{rubric}\n\nDIFF:\n{diff}"
 )
 
+key = os.environ.get("ANTHROPIC_API_KEY")
+if not key:
+    sys.exit("ANTHROPIC_API_KEY is not set. Locally it comes from .env; "
+             "in Actions it comes from the repository secret.")
+
 req = urllib.request.Request(
     "https://api.anthropic.com/v1/messages",
     data=json.dumps({
@@ -27,12 +32,16 @@ req = urllib.request.Request(
         "messages": [{"role": "user", "content": prompt}],
     }).encode(),
     headers={
-        "x-api-key": os.environ["ANTHROPIC_API_KEY"],
+        "x-api-key": key,
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
     },
 )
-body = json.loads(urllib.request.urlopen(req).read())
+try:
+    body = json.loads(urllib.request.urlopen(req).read())
+except urllib.error.HTTPError as exc:
+    detail = exc.read().decode(errors="replace")[:300]
+    sys.exit(f"Anthropic API returned {exc.code}: {detail}")
 
 # The model thinks before it answers, so content[0] is a thinking block.
 # Select the text block by type rather than by position.
