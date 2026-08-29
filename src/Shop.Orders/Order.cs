@@ -12,6 +12,7 @@ public class Order
     {
         "NL" => 0.21m,
         "DE" => 0.19m,
+        "FR" => 0.20m,
         _ => 0.20m,
     };
 }
