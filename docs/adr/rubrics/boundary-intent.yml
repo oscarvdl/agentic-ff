@@ -1,0 +1,27 @@
+rubric: boundary-intent
+version: 1
+applies_to: ["src/Shop.Orders/**", "src/Shop.Billing/**"]
+adrs: ["docs/adr/007-split-orders-and-billing.md"]
+criteria:
+  - id: bounded-context-intent
+    question: >
+      Does this change move responsibility across the Orders/Billing
+      boundary described in ADR-007, even where no compile-time
+      dependency was added?
+  - id: adr-assumptions
+    question: >
+      Do the assumptions recorded in the referenced ADRs still hold
+      after this change, or has one been silently invalidated?
+  - id: consumer-shaped-api
+    question: >
+      Is the public API still shaped around what consumers need, or
+      has it started to expose internal domain structure?
+  - id: ubiquitous-language
+    question: >
+      Does naming in this diff match the ubiquitous language of the
+      context it lives in, or is vocabulary drifting between contexts?
+output:
+  score: "0.0-1.0 overall fitness"
+  confidence: "0.0-1.0 evaluator confidence"
+  evidence: "file:line references from the diff"
+  rationale: "two sentences per triggered criterion"
